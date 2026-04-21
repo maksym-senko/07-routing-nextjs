@@ -1,9 +1,18 @@
-import { NotesPage } from "@/components/NotesPage/NotesPage";
+import NotesClient from "./Notes.client";
 
-export default async function FilteredNotesPage({ params }: { params: Promise<{ slug: string[] }> }) {
+interface PageProps {
+  params: Promise<{ slug: string[] }>;
+}
+
+export default async function FilteredNotesPage({ params }: PageProps) {
   const { slug } = await params;
-  const currentTag = slug[0];
-  const tagToFetch = currentTag === 'all' ? undefined : currentTag;
+  
+  const currentTag = slug[0] === 'all' ? undefined : slug[0];
 
-  return <NotesPage tag={tagToFetch} />;
+  return (
+    <section>
+      <h1 className="sr-only">Notes list</h1>
+      <NotesClient tag={currentTag} />
+    </section>
+  );
 }
