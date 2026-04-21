@@ -1,7 +1,4 @@
-'use client';
-
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import css from './Sidebar.module.css';
 
 
@@ -15,28 +12,22 @@ const TAGS = [
 ];
 
 export default function SidebarDefault() {
-  const pathname = usePathname();
-
+  
   return (
     <aside className={css.sidebar}>
       <h2 className={css.title}>Filter by Tags</h2>
       <nav>
         <ul className={css.list}>
-          {TAGS.map((tag) => {
-            const href = `/notes/filter/${tag.value}`;
-            const isActive = pathname === href;
-
-            return (
-              <li key={tag.value}>
-                <Link
-                  href={href}
-                  className={`${css.link} ${isActive ? css.active : ''}`}
-                >
-                  {tag.name}
-                </Link>
-              </li>
-            );
-          })}
+          {TAGS.map((tag) => (
+            <li key={tag.value}>
+              <Link
+                href={`/notes/filter/${tag.value}`}
+                className={css.link}
+              >
+                {tag.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </aside>
