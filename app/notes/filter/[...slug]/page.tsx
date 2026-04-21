@@ -1,22 +1,9 @@
-'use client';
+import { NotesPage } from "@/components/NotesPage/NotesPage";
 
-import { useQuery } from '@tanstack/react-query';
-import { fetchNotes } from '@/lib/api';
-import { NoteList } from '@/components/NoteList/NoteList';
+export default async function FilteredNotesPage({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
+  const currentTag = slug[0];
+  const tagToFetch = currentTag === 'all' ? undefined : currentTag;
 
-
-interface NotesPageProps {
-  tag?: string;
+  return <NotesPage tag={tagToFetch} />;
 }
-
-export const NotesPage = ({ tag }: NotesPageProps) => {
-  const { data: notes, isLoading, isError } = useQuery({
-    queryKey: ['notes', tag],
-    queryFn: () => fetchNotes(tag),
-  });
-
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading notes.</p>;
-
-  return <NoteList notes={notes ?? []} />;
-};

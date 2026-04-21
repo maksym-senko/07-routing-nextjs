@@ -1,47 +1,47 @@
 'use client';
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import css from './Pagination.module.css';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { fetchNotes } from '@/lib/api';
+import { NoteList } from '@/components/NoteList/NoteList';
+import { Pagination } from '@/components/Pagination/Pagination';
+import { Note } from '@/types/note';
 
-
-interface PaginationProps {
-  totalPages?: number;
+interface NotesResponse {
+  notes: Note[];
+  totalPages: number;
 }
 
-export const Pagination = ({ totalPages = 10 }: PaginationProps) => {
+export const NotesPage = ({ tag }: { tag?: string }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const currentPage = Number(searchParams.get('page')) || 1;
 
-  const handlePageChange = (page: number) => {
+  const { data, isLoading, isError } = useQuery<NotesResponse>({
+    queryKey: ['notes', tag, currentPage],
+    queryFn: () => fetchNotes({ tag, page: currentPage }),
+  });
+
+  const handlePageClick = (event: { selected: number }) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
+    params.set('page', (event.selected + 1).toString());
     replace(`${pathname}?${params.toString()}`);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data.</div>;
+
   return (
-    <div className={css.container}>
-      <button
-        className={css.button}
-        disabled={currentPage <= 1}
-        onClick={() => handlePageChange(currentPage - 1)}
-      >
-        Prev
-      </button>
-
-      <span className={css.pageInfo}>
-        Page {currentPage} of {totalPages}
-      </span>
-
-      <button
-        className={css.button}
-        disabled={currentPage >= totalPages}
-        onClick={() => handlePageChange(currentPage + 1)}
-      >
-        Next
-      </button>
+    <div>
+      <NoteList notes={data?.notes ?? []} />
+      
+      <Pagination 
+        pageCount={data?.totalPages ?? 1} 
+        onPageChange={handlePageClick}
+        forcePage={currentPage - 1}
+      />
     </div>
   );
 };

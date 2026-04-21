@@ -14,24 +14,33 @@ noteInstance.interceptors.request.use((config) => {
   return config;
 });
 
+export interface NotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
 interface FetchNotesParams {
   page: number;
   perPage: number;
   tag?: string;
 }
 
-export const fetchNotes = async (
-  tag?: string,
-  page: number = 1,
-  perPage: number = 12
-): Promise<Note[]> => {
+export const fetchNotes = async ({
+  tag,
+  page = 1,
+  perPage = 12,
+}: {
+  tag?: string;
+  page?: number;
+  perPage?: number;
+}): Promise<NotesResponse> => {
   const params: FetchNotesParams = { page, perPage };
   
   if (tag && tag !== "all") {
     params.tag = tag;
   }
 
-  const { data } = await noteInstance.get<Note[]>("/notes", { params });
+  const { data } = await noteInstance.get<NotesResponse>("/notes", { params });
   return data;
 };
 
@@ -44,8 +53,8 @@ export const createNote = async (note: {
   title: string;
   content: string;
   tag: string;
-}) => {
-  const { data } = await noteInstance.post("/notes", note);
+}): Promise<Note> => {
+  const { data } = await noteInstance.post<Note>("/notes", note);
   return data;
 };
 

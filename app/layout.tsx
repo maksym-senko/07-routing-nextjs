@@ -1,6 +1,8 @@
+import "./globals.css";
+
 export default function RootLayout({
   children,
-  modal, 
+  modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
@@ -10,6 +12,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         {children}
         {modal}
+        <div id="modal-root"></div>
       </body>
     </html>
   );

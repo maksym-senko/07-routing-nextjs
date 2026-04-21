@@ -1,13 +1,11 @@
-import Link from 'next/link';
+import css from './NotFound.module.css'; 
+
 
 export default function NotFound() {
   return (
-    <div style={{ padding: '40px', textAlign: 'center' }}>
-      <h2>Сторінку не знайдено</h2>
-      <p>На жаль, ми не змогли знайти запитану нотатку.</p>
-      <Link href="/notes/filter" style={{ color: 'blue', textDecoration: 'underline' }}>
-        Повернутися до списку
-      </Link>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1 className={css.title}>404 - Page not found</h1>
+      <p className={css.description}>Sorry, the page you are looking for does not exist.</p>
     </div>
   );
 }

@@ -1,24 +1,23 @@
 'use client';
-    
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+import { useQuery } from '@tanstack/react-query';
+import { useRouter, useParams } from 'next/navigation';
 import { Modal } from '@/components/Modal/Modal';
 import { NoteDetails } from '@/components/NoteDetails/NoteDetails';
 import { fetchNoteById } from '@/lib/api';
-import { Note } from '@/types/note';
 
 
-export default function NoteModalPage({ params }: { params: { id: string } }) {
+export default function NoteModalPage() {
   const router = useRouter();
-  
-  const [note, setNote] = useState<Note | null>(null);
+  const { id } = useParams(); 
 
-  useEffect(() => {
-    if (params.id) {
-      fetchNoteById(params.id).then(data => setNote(data));
-    }
-  }, [params.id]);
+  const { data: note, isLoading } = useQuery({
+    queryKey: ['note', id],
+    queryFn: () => fetchNoteById(id as string),
+    enabled: !!id,
+  });
 
+  if (isLoading) return null;
   if (!note) return null;
 
   return (
