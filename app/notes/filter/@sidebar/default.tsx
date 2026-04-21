@@ -6,11 +6,12 @@ import css from './Sidebar.module.css';
 
 
 const TAGS = [
-  { name: 'All', value: 'all' },
+  { name: 'All notes', value: 'all' },
+  { name: 'Todo', value: 'todo' },
   { name: 'Work', value: 'work' },
   { name: 'Personal', value: 'personal' },
-  { name: 'Home', value: 'home' },
-  { name: 'Important', value: 'important' },
+  { name: 'Meeting', value: 'meeting' },
+  { name: 'Shopping', value: 'shopping' },
 ];
 
 export default function SidebarDefault() {
