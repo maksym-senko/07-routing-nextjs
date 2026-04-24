@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import css from './Sidebar.module.css';
 
-
 const TAGS = [
   { name: 'All notes', value: 'all' },
-  { name: 'Todo', value: 'Todo' }, 
+  { name: 'Todo', value: 'Todo' },
   { name: 'Work', value: 'Work' },
   { name: 'Personal', value: 'Personal' },
   { name: 'Meeting', value: 'Meeting' },
@@ -20,7 +19,7 @@ export default function SidebarDefault() {
           {TAGS.map((tag) => (
             <li key={tag.value}>
               <Link
-                href={tag.value === 'all' ? '/notes' : `/notes/filter/${tag.value}`}
+                href={`/notes/filter/${tag.value}`}
                 className={css.link}
               >
                 {tag.name}
