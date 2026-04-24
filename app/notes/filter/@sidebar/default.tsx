@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import css from './Sidebar.module.css';
 
+// Використовуємо as const для строгої типізації літералів
 const TAGS = [
   { name: 'All notes', value: 'all' },
   { name: 'Todo', value: 'Todo' },
@@ -17,7 +18,7 @@ export default function SidebarDefault() {
       <nav>
         <ul className={css.list}>
           {TAGS.map((tag) => (
-            <li key={tag.value}>
+            <li key={tag.value} className={css.listItem}>
               <Link
                 href={`/notes/filter/${tag.value}`}
                 className={css.link}
